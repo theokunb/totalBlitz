@@ -21,7 +21,7 @@ public class Fsm
     {
         var type = typeof(T);
 
-        if(_currentState.GetType() == type)
+        if(_currentState?.GetType() == type)
         {
             return;
         }
