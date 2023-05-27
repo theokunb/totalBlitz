@@ -1,8 +1,8 @@
 public abstract class State
 {
-    protected readonly State Fsm;
+    protected readonly Fsm Fsm;
 
-    public State(State fsm)
+    public State(Fsm fsm)
     {
         Fsm = fsm;
     }
