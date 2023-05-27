@@ -1,11 +1,11 @@
 public class StateForward : State
 {
-    private Unit _unit;
+    private UnitMover _unit;
     private PlayerInput _playerInput;
 
     public StateForward(Fsm fsm) : base(fsm)
     {
-        _unit = ServiceLocator.Instance.Get<Unit>();
+        _unit = ServiceLocator.Instance.Get<UnitMover>();
         _playerInput = new PlayerInput();
     }
 

@@ -1,11 +1,11 @@
 public class StateRight : State
 {
-    private Unit _unit;
+    private UnitMover _unit;
     private PlayerInput _playerInput;
 
     public StateRight(Fsm fsm) : base(fsm)
     {
-        _unit = ServiceLocator.Instance.Get<Unit>();
+        _unit = ServiceLocator.Instance.Get<UnitMover>();
         _playerInput = new PlayerInput();
     }
 
