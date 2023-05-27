@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Unit : MonoBehaviour, IService
+public class UnitMover : MonoBehaviour, IService
 {
     [SerializeField] private float _forwardSpeed;
     [SerializeField] private float _sideSpeed;
