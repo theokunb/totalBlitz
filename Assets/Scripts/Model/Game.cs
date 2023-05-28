@@ -7,6 +7,7 @@ public class Game : MonoBehaviour
     [SerializeField] private MazeCreator _mazeCreator;
     [SerializeField] private Unit _unit;
     [SerializeField] private GameView _gameView;
+    [SerializeField] private Timer _timer;
 
     private void Awake()
     {
@@ -15,6 +16,7 @@ public class Game : MonoBehaviour
         ServiceLocator.Instance.Register(_unitMover);
         ServiceLocator.Instance.Register(_unit);
         ServiceLocator.Instance.Register(maze);
+        ServiceLocator.Instance.Register(_timer);
 
         ServiceLocator.Instance.Bind(_gameView, new GameViewModel());
     }
