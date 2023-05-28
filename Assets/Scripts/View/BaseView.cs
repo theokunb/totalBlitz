@@ -15,5 +15,5 @@ public abstract class BaseView<T> : MonoBehaviour, IService where T : BaseViewMo
         ViewModel?.Unsubscribe();
     }
 
-    protected abstract void OnInitialized();
+    protected virtual void OnInitialized() { }
 }

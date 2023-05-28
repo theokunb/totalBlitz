@@ -24,6 +24,11 @@ public class UnitMover : MonoBehaviour, IService
         _fsm.SetState<StateIdle>();
     }
 
+    private void OnDisable()
+    {
+        Stay();
+    }
+
     private void Update()
     {
         _fsm.Update();

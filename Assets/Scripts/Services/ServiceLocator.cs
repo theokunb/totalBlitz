@@ -44,7 +44,7 @@ public class ServiceLocator
         _services.Add(name, service);
     }
 
-    public void Unregister<T>(T service) where T : IService
+    public void Unregister<T>() where T : IService
     {
         string name = typeof(T).Name;
 
