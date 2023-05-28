@@ -4,7 +4,7 @@ public class GameViewModel : BaseViewModel
 {
     private CompositeDisposable _disposable;
 
-    public IntReactiveProperty Score;
+    public IntReactiveProperty Score { get;private set; }
 
     public GameViewModel() 
     {
