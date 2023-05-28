@@ -1,12 +1,13 @@
+using UniRx;
 using UnityEngine;
 
-public class Unit : MonoBehaviour, ICollector
+public class Unit : MonoBehaviour, ICollector, IService
 {
-    private int _collectedValue = 0;
+    public IntReactiveProperty CollectedValue;
 
     public void Collect(ICollectable collectable)
     {
-        _collectedValue += collectable.Value;
+        CollectedValue.Value += collectable.Value;
         collectable.OnCollected();
     }
 }
