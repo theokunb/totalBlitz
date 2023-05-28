@@ -1,3 +1,4 @@
+using System;
 using UniRx;
 using UnityEngine;
 
@@ -43,9 +44,35 @@ public class GameViewModel : BaseViewModel
 
     private void OnTimerUp()
     {
+        DisableServices();
+        PerformResult();
+
+        GameMenu gameMenu = ServiceLocator.Instance.Get<GameMenu>();
+        gameMenu.gameObject.SetActive(true);
+    }
+
+    private void PerformResult()
+    {
+        Storage storage = ServiceLocator.Instance.Get<Storage>();
+
+        var leaderboard = storage.Read();
+        var data = new Data()
+        {
+            Date = DateTime.Now,
+            Score = Score.Value
+        };
+
+        if (leaderboard.TryAdd(data))
+        {
+            storage.Write(leaderboard);
+        }
+    }
+
+    private void DisableServices()
+    {
         UnitMover mover = ServiceLocator.Instance.Get<UnitMover>();
         CameraRotate cameraRotate = ServiceLocator.Instance.Get<CameraRotate>();
-        
+
         if (Camera.main.TryGetComponent(out CameraRotate camera))
         {
             camera.enabled = false;
@@ -55,8 +82,5 @@ public class GameViewModel : BaseViewModel
         mover.enabled = false;
         cameraRotate.enabled = false;
         _unit.enabled = false;
-
-        GameMenu gameMenu = ServiceLocator.Instance.Get<GameMenu>();
-        gameMenu.gameObject.SetActive(true);
     }
 }

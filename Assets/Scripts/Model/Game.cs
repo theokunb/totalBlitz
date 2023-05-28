@@ -11,15 +11,19 @@ public class Game : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private GameMenu _gameMenu;
 
+    private Storage _storage;
+
     private void Awake()
     {
         var maze = _mazeCreator.Create(_mazeSize);
+        _storage = new FileStorage();
 
         ServiceLocator.Instance.Register(_unitMover);
         ServiceLocator.Instance.Register(_unit);
         ServiceLocator.Instance.Register(maze);
         ServiceLocator.Instance.Register(_timer);
         ServiceLocator.Instance.Register(_unitRotate);
+        ServiceLocator.Instance.Register(_storage);
 
         ServiceLocator.Instance.Bind(_gameView, new GameViewModel());
         ServiceLocator.Instance.Bind(_gameMenu, new GameMenuViewModel());
@@ -34,5 +38,6 @@ public class Game : MonoBehaviour
         ServiceLocator.Instance.Unregister<CameraRotate>();
         ServiceLocator.Instance.Unregister<GameView>();
         ServiceLocator.Instance.Unregister<GameMenu>();
+        ServiceLocator.Instance.Unregister<Storage>();
     }
 }
