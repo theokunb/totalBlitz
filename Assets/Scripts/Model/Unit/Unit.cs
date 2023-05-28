@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour, ICollector, IService
 {
-    public IntReactiveProperty CollectedValue { get; private set; }
+    public IntReactiveProperty CollectedValue;
 
     public void Collect(ICollectable collectable)
     {
