@@ -1338,15 +1338,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7623799132539284922, guid: 8bae88bed48917d479923304a432494e, type: 3}
       propertyPath: _backSpeed
-      value: 90
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 7623799132539284922, guid: 8bae88bed48917d479923304a432494e, type: 3}
       propertyPath: _sideSpeed
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7623799132539284922, guid: 8bae88bed48917d479923304a432494e, type: 3}
       propertyPath: _forwardSpeed
-      value: 140
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7623799132539284927, guid: 8bae88bed48917d479923304a432494e, type: 3}
       propertyPath: m_RootOrder

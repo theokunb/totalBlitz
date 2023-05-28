@@ -32,7 +32,7 @@ public class UnitMover : MonoBehaviour, IService
         Stay();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _fsm.Update();
     }
