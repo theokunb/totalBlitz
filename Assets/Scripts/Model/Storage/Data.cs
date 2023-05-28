@@ -22,6 +22,8 @@ public class LeaderboardData
         _datas = new List<Data>();
     }
 
+    public IEnumerable<Data> GetData() => _datas;
+
     public bool TryAdd(Data data)
     {
         var sorted = _datas.OrderByDescending(element => element.Score)

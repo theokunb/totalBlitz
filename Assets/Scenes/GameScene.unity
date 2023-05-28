@@ -343,7 +343,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
+  m_fontSize: 58.05
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 312509762}
   - component: {fileID: 312509761}
   - component: {fileID: 312509763}
+  - component: {fileID: 312509764}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -552,6 +553,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63e83e44cc0085428e097cfac88a521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &312509764
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312509759}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &358714135
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,7 +912,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 62.4
+  m_fontSize: 62.45
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
