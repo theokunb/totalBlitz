@@ -1,8 +1,10 @@
 using UniRx;
+using UnityEngine;
 
 public class GameViewModel : BaseViewModel
 {
     private CompositeDisposable _disposable;
+    private Unit _unit;
     private Timer _timer;
 
     public IntReactiveProperty Score;
@@ -13,10 +15,10 @@ public class GameViewModel : BaseViewModel
         _disposable = new CompositeDisposable();
         Score = new IntReactiveProperty();
         Time = new FloatReactiveProperty();
-        var unit = ServiceLocator.Instance.Get<Unit>();
+        _unit = ServiceLocator.Instance.Get<Unit>();
         _timer = ServiceLocator.Instance.Get<Timer>();
 
-        unit.CollectedValue.Subscribe(value => OnScoreChanged(value))
+        _unit.CollectedValue.Subscribe(value => OnScoreChanged(value))
             .AddTo(_disposable);
         _timer.Seconds.Subscribe(value => OnTimeChanged(value))
             .AddTo(_disposable);
@@ -41,6 +43,20 @@ public class GameViewModel : BaseViewModel
 
     private void OnTimerUp()
     {
+        UnitMover mover = ServiceLocator.Instance.Get<UnitMover>();
+        CameraRotate cameraRotate = ServiceLocator.Instance.Get<CameraRotate>();
+        
+        if (Camera.main.TryGetComponent(out CameraRotate camera))
+        {
+            camera.enabled = false;
+        }
+
         _timer.enabled = false;
+        mover.enabled = false;
+        cameraRotate.enabled = false;
+        _unit.enabled = false;
+
+        GameMenu gameMenu = ServiceLocator.Instance.Get<GameMenu>();
+        gameMenu.gameObject.SetActive(true);
     }
 }
