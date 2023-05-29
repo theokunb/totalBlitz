@@ -1,32 +1,16 @@
 public class StateBack : State
 {
     private UnitMover _unit;
-    private PlayerInput _playerInput;
 
     public StateBack(Fsm fsm) : base(fsm)
     {
         _unit = ServiceLocator.Instance.Get<UnitMover>();
-        _playerInput = new PlayerInput();
-    }
-
-    public override void Enter()
-    {
-        _playerInput.Enable();
-    }
-
-    public override void Exit()
-    {
-        _playerInput.Disable();
     }
 
     public override void Update()
     {
-        _unit.MoveBack();
-        var moveValue = _playerInput.Player.Back.ReadValue<float>();
+        base.Update();
 
-        if (moveValue == 0)
-        {
-            Fsm.SetState<StateIdle>();
-        }
+        _unit.MoveBack();
     }
 }
