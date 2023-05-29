@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.InputSystem;
 
 public class Fsm
 {
@@ -17,21 +19,16 @@ public class Fsm
         _states.Add(state.GetType(), state);
     }
 
-    public void SetState<T>() where T : State
+    public void SetState(State nextState ,InputAction input = null)
     {
-        var type = typeof(T);
-
-        if(_currentState?.GetType() == type)
+        if(_currentState == nextState)
         {
             return;
         }
 
-        if(_states.TryGetValue(type, out var state))
+        if(_states.Values.Contains(nextState))
         {
-            _currentState?.Exit();
-            
-            _currentState = state;
-            _currentState.Enter();
+            _currentState = nextState;
         }
     }
 

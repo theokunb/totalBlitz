@@ -4,6 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class UnitMover : MonoBehaviour, IService
 {
+    private const float DampTime = 0.05f;
+    private const float Distance = 0.5f;
+
     [SerializeField] private float _forwardSpeed;
     [SerializeField] private float _sideSpeed;
     [SerializeField] private float _backSpeed;
@@ -18,13 +21,35 @@ public class UnitMover : MonoBehaviour, IService
         _rigidBody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
-        _fsm.AddState(new StateIdle(_fsm));
-        _fsm.AddState(new StateForward(_fsm));
-        _fsm.AddState(new StateLeft(_fsm));
-        _fsm.AddState(new StateRight(_fsm));
-        _fsm.AddState(new StateBack(_fsm));
+        State idleState = new StateIdle(_fsm);
+        State forwardState = new StateForward(_fsm);
+        State leftState = new StateLeft(_fsm);
+        State rightState = new StateRight(_fsm);
+        State backState = new StateBack(_fsm);
 
-        _fsm.SetState<StateIdle>();
+        Condition conditionOnIdle = new ConditionOnIdle(idleState);
+        Condition conditionOnForward = new ConditionOnForward(forwardState);
+        Condition conditionOnLeft = new ConditionOnLeft(leftState);
+        Condition conditionOnBack = new ConditionOnBack(backState);
+        Condition conditionRight = new ConditionOnRight(rightState);
+        Condition conditionMoveForward = new ConditionMoveForward(forwardState, this, Distance);
+        Condition conditionMoveLeft = new ConditionMoveLeft(leftState, this, Distance);
+        Condition conditionMoveBack = new ConditionMoveBack(backState, this, Distance);
+        Condition conditionMoveRight = new ConditionMoveRight(rightState, this, Distance);
+
+        AddConditions(idleState, conditionOnIdle, conditionOnForward, conditionOnLeft, conditionRight, conditionOnBack);
+        AddConditions(forwardState, conditionOnIdle, conditionMoveForward, conditionMoveLeft, conditionMoveBack, conditionMoveRight);
+        AddConditions(leftState, conditionOnIdle, conditionMoveLeft, conditionMoveForward,conditionMoveBack, conditionMoveRight);
+        AddConditions(backState, conditionOnIdle, conditionMoveBack, conditionMoveForward, conditionMoveLeft, conditionMoveRight);
+        AddConditions(rightState, conditionOnIdle, conditionMoveRight, conditionMoveForward, conditionMoveLeft, conditionMoveBack);
+
+        _fsm.AddState(idleState);
+        _fsm.AddState(forwardState);
+        _fsm.AddState(leftState);
+        _fsm.AddState(rightState);
+        _fsm.AddState(backState);
+
+        _fsm.SetState(idleState);
     }
 
     private void OnDisable()
@@ -40,35 +65,35 @@ public class UnitMover : MonoBehaviour, IService
     public void Stay()
     {
         _rigidBody.velocity = Vector3.zero;
-        _animator.SetTrigger(AnimationParameters.Params.Stay);
+        _animator.SetFloat(AnimationParameters.Params.MoveValue, AnimationParameters.Values.Idle, DampTime, Time.deltaTime);
     }
 
     public void MoveForward()
     {
         _rigidBody.velocity = transform.forward * _forwardSpeed * Time.deltaTime;
         Clamp(transform.forward, _forwardSpeed);
-        _animator.SetTrigger(AnimationParameters.Params.Walk);
+        _animator.SetFloat(AnimationParameters.Params.MoveValue, AnimationParameters.Values.Forward, DampTime, Time.deltaTime);
     }
 
     public void MoveBack()
     {
         _rigidBody.velocity = -transform.forward * _backSpeed * Time.deltaTime;
         Clamp(-transform.forward, _backSpeed);
-        _animator.SetTrigger(AnimationParameters.Params.Back);
+        _animator.SetFloat(AnimationParameters.Params.MoveValue, AnimationParameters.Values.Back, DampTime, Time.deltaTime);
     }
 
     public void MoveLeft()
     {
         _rigidBody.velocity = -transform.right * _sideSpeed * Time.deltaTime;
         Clamp(-transform.right, _sideSpeed);
-        _animator.SetTrigger(AnimationParameters.Params.Left);
+        _animator.SetFloat(AnimationParameters.Params.MoveValue, AnimationParameters.Values.Left, DampTime, Time.deltaTime);
     }
 
     public void MoveRight()
     {
         _rigidBody.velocity = transform.right * _sideSpeed * Time.deltaTime;
         Clamp(transform.right, _sideSpeed);
-        _animator.SetTrigger(AnimationParameters.Params.Right);
+        _animator.SetFloat(AnimationParameters.Params.MoveValue, AnimationParameters.Values.Right, DampTime, Time.deltaTime);
     }
 
     private void Clamp(Vector3 direction, float maxValue)
@@ -78,16 +103,29 @@ public class UnitMover : MonoBehaviour, IService
             _rigidBody.velocity = direction * maxValue;
         }
     }
+
+    private void AddConditions(State state, params Condition[] conditions)
+    {
+        foreach (Condition condition in conditions)
+        {
+            state.AddCondition(condition);
+        }
+    }
 }
 
 public static class AnimationParameters
 {
     public static class Params
     {
-        public static string Walk = "Walk";
-        public static string Left = "Left";
-        public static string Right = "Right";
-        public static string Back = "Back";
-        public static string Stay = "Stay";
+        public static string MoveValue = "MoveValue";
+    }
+
+    public static class Values
+    {
+        public static float Idle = 0f;
+        public static float Forward = 0.25f;
+        public static float Left = 0.5f;
+        public static float Back = 0.75f;
+        public static float Right = 1f;
     }
 }
