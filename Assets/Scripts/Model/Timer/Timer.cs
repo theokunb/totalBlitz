@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour, IService
 {
-    public FloatReactiveProperty Seconds = new FloatReactiveProperty();
+    [SerializeField] private float _baseTime;
+
+    public FloatReactiveProperty Seconds { get; private set; } = new FloatReactiveProperty();
 
     public event Action TimeUp;
 
@@ -16,5 +18,10 @@ public class Timer : MonoBehaviour, IService
         {
             TimeUp?.Invoke();
         }
+    }
+
+    public void ResetSeconds()
+    {
+        Seconds.Value = _baseTime;
     }
 }

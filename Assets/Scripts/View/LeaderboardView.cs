@@ -18,7 +18,8 @@ public class LeaderboardView : BaseView<LeaderboardViewModel>
     {
         _canvasGroup.alpha = 0;
 
-        _canvasGroup.DOFade(1, 0.5f);
+        _canvasGroup.DOFade(1, 0.5f)
+            .SetUpdate(true);
     }
 
     protected override void OnInitialized()
@@ -37,9 +38,11 @@ public class LeaderboardView : BaseView<LeaderboardViewModel>
     {
         _canvasGroup.alpha = 1;
 
-        _canvasGroup.DOFade(0, 0.5f).OnComplete(() =>
-        {
-            gameObject.SetActive(false);
-        });
+        _canvasGroup.DOFade(0, 0.5f)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
     }
 }

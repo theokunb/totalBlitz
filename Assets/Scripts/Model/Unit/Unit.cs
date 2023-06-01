@@ -10,4 +10,9 @@ public class Unit : MonoBehaviour, ICollector, IService
         CollectedValue.Value += collectable.Value;
         collectable.OnCollected();
     }
+
+    public void ResetCoins()
+    {
+        CollectedValue.Value = 0;
+    }
 }

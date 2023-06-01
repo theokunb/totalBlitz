@@ -1,21 +1,27 @@
 using System;
 using UniRx;
-using UnityEngine;
 
 public class GameViewModel : BaseViewModel
 {
     private CompositeDisposable _disposable;
     private Unit _unit;
     private Timer _timer;
+    private PlayerInput _playerInput;
 
     public IntReactiveProperty Score;
     public FloatReactiveProperty Time;
 
-    public GameViewModel() 
+    public event Action EndGame;
+
+    public GameViewModel()
     {
+        _playerInput = new PlayerInput();
+        _playerInput.Enable();
+
         _disposable = new CompositeDisposable();
         Score = new IntReactiveProperty();
         Time = new FloatReactiveProperty();
+
         _unit = ServiceLocator.Instance.Get<Unit>();
         _timer = ServiceLocator.Instance.Get<Timer>();
 
@@ -24,12 +30,15 @@ public class GameViewModel : BaseViewModel
         _timer.Seconds.Subscribe(value => OnTimeChanged(value))
             .AddTo(_disposable);
         _timer.TimeUp += OnTimerUp;
+        _playerInput.Player.Pause.performed += OnPause;
     }
 
     public override void Unsubscribe()
     {
         _disposable.Dispose();
         _timer.TimeUp -= OnTimerUp;
+        _playerInput.Player.Pause.performed -= OnPause;
+        _playerInput.Disable();
     }
 
     private void OnScoreChanged(int value)
@@ -44,11 +53,12 @@ public class GameViewModel : BaseViewModel
 
     private void OnTimerUp()
     {
-        DisableServices();
         PerformResult();
 
-        GameMenu gameMenu = ServiceLocator.Instance.Get<GameMenu>();
-        gameMenu.gameObject.SetActive(true);
+        _unit.ResetCoins();
+        _timer.ResetSeconds();
+        EndGame?.Invoke();
+        MainMenuView.Instance.gameObject.SetActive(true);
     }
 
     private void PerformResult()
@@ -68,19 +78,8 @@ public class GameViewModel : BaseViewModel
         }
     }
 
-    private void DisableServices()
+    private void OnPause(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnitMover mover = ServiceLocator.Instance.Get<UnitMover>();
-        CameraRotate cameraRotate = ServiceLocator.Instance.Get<CameraRotate>();
-
-        if (Camera.main.TryGetComponent(out CameraRotate camera))
-        {
-            camera.enabled = false;
-        }
-
-        _timer.enabled = false;
-        mover.enabled = false;
-        cameraRotate.enabled = false;
-        _unit.enabled = false;
+        MainMenuView.Instance.gameObject.SetActive(!MainMenuView.Instance.gameObject.activeSelf);
     }
 }

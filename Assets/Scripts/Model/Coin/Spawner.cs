@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinCreator : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     [SerializeField] private int _cointCount;
     [SerializeField] private GameObject _coinTemplate;
@@ -8,10 +9,16 @@ public class CoinCreator : MonoBehaviour
 
     private Maze _maze;
     private int tries = 10;
+    private List<GameObject> _coins = new List<GameObject>();
 
-    private void Start()
+    public void Fill(Maze maze)
     {
-        _maze = ServiceLocator.Instance.Get<Maze>();
+        foreach (var coin in _coins)
+        {
+            Destroy(coin.gameObject);
+        }
+
+        _maze = maze;
         CellView cellView = GetEmptyCell(tries);
         _unit.transform.position = cellView.transform.position;
 
@@ -19,7 +26,7 @@ public class CoinCreator : MonoBehaviour
         {
             cellView = GetEmptyCell(tries);
             cellView.InsideCell = InsideCell.Coin;
-            InstatntiateAt(cellView, _coinTemplate);
+            _coins.Add(InstatntiateAt(cellView, _coinTemplate));
         }
     }
 

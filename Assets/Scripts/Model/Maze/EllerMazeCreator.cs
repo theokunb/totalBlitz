@@ -1,27 +1,42 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EllerMazeCreator : MazeCreator
 {
     private int _size;
+    private List<CellView> _filledCells = new List<CellView>();
+    private Maze _maze = new Maze();
 
     public override Maze Create(int size)
     {
         _size = size;
 
-        Maze maze = new Maze();
         var cells = GenerateMatrix();
         Vector2 position = new Vector2(-0.5f, 0.5f);
 
-        for (int i = 1; i <= _size; i++)
+        if(_filledCells.Count != 0)
         {
-            for (int j = 0; j < _size; j++)
+            int counter = 0;
+
+            foreach(var cell in _filledCells)
             {
-                maze.AddCell(CreateCell(cells[i - 1, j], i - 1, j, position + new Vector2((float)j / _size, (float)-i / _size)));
+                cell.Setup(cells[counter / size, counter % size]);
+                counter++;
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= _size; i++)
+            {
+                for (int j = 0; j < _size; j++)
+                {
+                    _maze.AddCell(CreateCell(cells[i - 1, j], i - 1, j, position + new Vector2((float)j / _size, (float)-i / _size)));
+                }
             }
         }
 
-        return maze;
+        return _maze;
     }
 
     private CellView CreateCell(Cell cell,int i, int j, Vector2 position)
@@ -30,6 +45,7 @@ public class EllerMazeCreator : MazeCreator
         cellView.transform.localScale = new Vector3(cellView.transform.localScale.x / _size, cellView.transform.localScale.y, cellView.transform.localScale.z / _size);
         cellView.transform.localPosition = new Vector3(position.x + cellView.transform.localScale.x / 2, cellView.transform.localPosition.y, position.y + cellView.transform.localScale.z / 2);
         cellView.Setup(cell);
+        _filledCells.Add(cellView);
 
         return cellView;
     }

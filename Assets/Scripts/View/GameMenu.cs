@@ -1,9 +1,12 @@
-using UnityEngine;
 using DG.Tweening;
+using System;
+using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class GameMenu : BaseView<GameMenuViewModel>
 {
+    [SerializeField] private Game _game;
+
     private CanvasGroup _canvasGroup;
 
     private void Awake()
@@ -13,18 +16,42 @@ public class GameMenu : BaseView<GameMenuViewModel>
 
     private void OnEnable()
     {
-        _canvasGroup.alpha = 0;
-
-        _canvasGroup.DOFade(1, 0.5f);
+        FadeIn(0.5f);
     }
 
     public void OnReplay()
     {
-        ViewModel.ReplayCommand.Execute();
+        FadeOut(0.5f, () =>
+        {
+            _game.NewGame();
+        });
     }
 
     public void OnExit()
     {
-        ViewModel.ExitCommand.Execute();
+        FadeOut(0.5f, () =>
+        {
+        });
+    }
+
+    public void FadeIn(float duration, Action onComplete = null)
+    {
+        _canvasGroup.alpha = 0;
+        _canvasGroup.DOFade(1, duration)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onComplete?.Invoke();
+            });
+    }
+
+    public void FadeOut(float duration, Action onConplete = null)
+    {
+        _canvasGroup.alpha = 1;
+        _canvasGroup.DOFade(0, duration)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onConplete?.Invoke();
+            });
     }
 }

@@ -24,6 +24,7 @@ public class Coin : MonoBehaviour, ICollectable
 
     private void OnDestroy()
     {
+        _canRotate = false;
         _tween.Kill();
     }
 
