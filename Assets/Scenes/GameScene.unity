@@ -386,7 +386,6 @@ MonoBehaviour:
   _leaderboardView: {fileID: 1082325684}
   _mazeSize: 20
   _mazeCreator: {fileID: 484917798}
-  _unitMover: {fileID: 1090102188}
   _unit: {fileID: 1090102195}
   _unitRotate: {fileID: 1090102196}
   _timer: {fileID: 151537490}
@@ -403,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89969c1fd1b290b40a0d6380c41404b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseTime: 10
+  _baseTime: 60
 --- !u!1 &237092834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,9 +1116,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5520c5623da0c41b3935648b3f4494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cointCount: 10
-  _coinTemplate: {fileID: 625758279593043729, guid: c79287529775d0a4ea91877ec0c57499, type: 3}
   _unit: {fileID: 1090102187}
+  _coinTemplate: {fileID: 625758279593043729, guid: c79287529775d0a4ea91877ec0c57499, type: 3}
+  _cointsCount: 10
+  _enemyTemplate: {fileID: 4150345740808477259, guid: cba2d90674dfc6a429db924ad7b6212d, type: 3}
+  _enemyCount: 6
+  tries: 10
 --- !u!1 &593410478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,6 +1611,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7623799132539284922, guid: 8bae88bed48917d479923304a432494e, type: 3}
+      propertyPath: _input
+      value: 
+      objectReference: {fileID: 1090102202}
     - target: {fileID: 7623799132539284923, guid: 8bae88bed48917d479923304a432494e, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1696,17 +1702,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7623799132539284899, guid: 8bae88bed48917d479923304a432494e, type: 3}
   m_PrefabInstance: {fileID: 1090102186}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1090102188 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7623799132539284922, guid: 8bae88bed48917d479923304a432494e, type: 3}
-  m_PrefabInstance: {fileID: 1090102186}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1090102187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b78cf58bf1653642bdf97402e2bff04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1090102195 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1090102195, guid: 8bae88bed48917d479923304a432494e, type: 3}
@@ -1727,6 +1722,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d53f50e3d10a7b540bcf000a8f313742, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1090102202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090102187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb40d987d157ee499f1c1f304ffbebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1146581841

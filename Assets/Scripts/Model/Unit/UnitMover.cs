@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
-public class UnitMover : MonoBehaviour, IService
+public class UnitMover : MonoBehaviour
 {
     private const float DampTime = 0.05f;
     private const float Distance = 0.5f;
@@ -10,6 +10,7 @@ public class UnitMover : MonoBehaviour, IService
     [SerializeField] private float _forwardSpeed;
     [SerializeField] private float _sideSpeed;
     [SerializeField] private float _backSpeed;
+    [SerializeField] private Input _input;
 
     private Fsm _fsm;
     private Rigidbody _rigidBody;
@@ -21,17 +22,17 @@ public class UnitMover : MonoBehaviour, IService
         _rigidBody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
-        State idleState = new StateIdle(_fsm);
-        State forwardState = new StateForward(_fsm);
-        State leftState = new StateLeft(_fsm);
-        State rightState = new StateRight(_fsm);
-        State backState = new StateBack(_fsm);
+        State idleState = new StateIdle(_fsm, this);
+        State forwardState = new StateForward(_fsm, this);
+        State leftState = new StateLeft(_fsm, this);
+        State rightState = new StateRight(_fsm, this);
+        State backState = new StateBack(_fsm, this);
 
-        Condition conditionOnIdle = new ConditionOnIdle(idleState);
-        Condition conditionOnForward = new ConditionOnForward(forwardState);
-        Condition conditionOnLeft = new ConditionOnLeft(leftState);
-        Condition conditionOnBack = new ConditionOnBack(backState);
-        Condition conditionRight = new ConditionOnRight(rightState);
+        Condition conditionOnIdle = new ConditionOnIdle(idleState, _input);
+        Condition conditionOnForward = new ConditionOnForward(forwardState, _input);
+        Condition conditionOnLeft = new ConditionOnLeft(leftState, _input);
+        Condition conditionOnBack = new ConditionOnBack(backState, _input);
+        Condition conditionRight = new ConditionOnRight(rightState, _input);
         Condition conditionMoveForward = new ConditionMoveForward(forwardState, this, Distance);
         Condition conditionMoveLeft = new ConditionMoveLeft(leftState, this, Distance);
         Condition conditionMoveBack = new ConditionMoveBack(backState, this, Distance);

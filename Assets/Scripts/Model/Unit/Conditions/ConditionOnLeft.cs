@@ -1,16 +1,20 @@
 public class ConditionOnLeft : Condition
 {
-    private PlayerInput _playerInput;
+    private Input _input;
 
-    public ConditionOnLeft(State state) : base(state)
+    public ConditionOnLeft(State state, Input input) : base(state)
     {
-        _playerInput = new PlayerInput();
-        _playerInput.Enable();
+        _input = input;
+        _input.Enable();
+    }
+
+    ~ConditionOnLeft()
+    {
+        _input.Disable();
     }
 
     public override bool CanTransit()
     {
-        return _playerInput.Player.Left.ReadValue<float>() != 0;
-        //return !Physics.Raycast(_targetUnit.transform.position + Vector3.up, -_targetUnit.transform.right, _distance, 6);
+        return _input.LeftReadValue() != 0;
     }
 }

@@ -1,16 +1,20 @@
 public class ConditionOnBack : Condition
 {
-    private PlayerInput _playerInput;
+    private Input _input;
 
-    public ConditionOnBack(State state) : base(state)
+    public ConditionOnBack(State state, Input input) : base(state)
     {
-        _playerInput = new PlayerInput();
-        _playerInput.Enable();
+        _input = input;
+        _input.Enable();
+    }
+
+    ~ConditionOnBack() 
+    {
+        _input.Disable();
     }
 
     public override bool CanTransit()
     {
-        return _playerInput.Player.Back.ReadValue<float>() != 0;
-        //return !Physics.Raycast(_targetUnit.transform.position + Vector3.up, -_targetUnit.transform.forward, _distance, 6);
+        return _input.BackReadValue() != 0;
     }
 }

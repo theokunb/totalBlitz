@@ -1,19 +1,24 @@
 public class ConditionOnIdle : Condition
 {
-    private PlayerInput _playerInput;
+    private Input _input;
 
-    public ConditionOnIdle(State state): base(state)
+    public ConditionOnIdle(State state, Input input): base(state)
     {
-        _playerInput = new PlayerInput();
-        _playerInput.Enable();
+        _input = input;
+        _input.Enable();
+    }
+
+    ~ConditionOnIdle() 
+    {
+        _input.Disable();
     }
 
     public override bool CanTransit()
     {
-        var forward = _playerInput.Player.Forward.ReadValue<float>();
-        var back = _playerInput.Player.Back.ReadValue<float>();
-        var left = _playerInput.Player.Left.ReadValue<float>();
-        var right = _playerInput.Player.Right.ReadValue<float>();
+        var forward = _input.ForwardReadValue();
+        var back = _input.BackReadValue();
+        var left = _input.LeftReadValue();
+        var right = _input.RightReadValue();
 
         return forward + back + left + right == 0;
     }
