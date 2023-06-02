@@ -2,9 +2,9 @@ public class StateLeft : State
 {
     private UnitMover _unit;
 
-    public StateLeft(Fsm fsm) : base(fsm)
+    public StateLeft(Fsm fsm, UnitMover mover) : base(fsm)
     {
-        _unit = ServiceLocator.Instance.Get<UnitMover>();
+        _unit = mover;
     }
 
     public override void Update()

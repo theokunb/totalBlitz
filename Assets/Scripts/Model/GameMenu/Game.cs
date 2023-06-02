@@ -7,11 +7,10 @@ public class Game : MonoBehaviour
     [SerializeField] private LeaderboardView _leaderboardView;
     [SerializeField] private int _mazeSize;
     [SerializeField] private MazeCreator _mazeCreator;
-    [SerializeField] private UnitMover _unitMover;
     [SerializeField] private Unit _unit;
     [SerializeField] private CameraRotate _unitRotate;
     [SerializeField] private Timer _timer;
-    [SerializeField] private Spawner _coinCreator;
+    [SerializeField] private SpawnerManager _coinCreator;
 
     private Storage _storage;
     private Maze _maze;
@@ -21,7 +20,6 @@ public class Game : MonoBehaviour
         NewGame();
         _storage = new FileStorage();
 
-        ServiceLocator.Instance.Register(_unitMover);
         ServiceLocator.Instance.Register(_unit);
         ServiceLocator.Instance.Register(_maze);
         ServiceLocator.Instance.Register(_timer);
@@ -35,7 +33,6 @@ public class Game : MonoBehaviour
 
     private void OnDestroy()
     {
-        ServiceLocator.Instance.Unregister<UnitMover>();
         ServiceLocator.Instance.Unregister<Unit>();
         ServiceLocator.Instance.Unregister<Maze>();
         ServiceLocator.Instance.Unregister<Timer>();

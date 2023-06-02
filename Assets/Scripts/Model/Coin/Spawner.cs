@@ -1,43 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class Spawner
 {
-    [SerializeField] private int _cointCount;
-    [SerializeField] private GameObject _coinTemplate;
-    [SerializeField] private GameObject _unit;
-
     private Maze _maze;
-    private int tries = 10;
-    private List<GameObject> _coins = new List<GameObject>();
+    private GameObject _template;
+    private InsideCell _insideCell;
+    private List<GameObject> _objects;
 
-    public void Fill(Maze maze)
+    public Spawner(Maze maze, GameObject template, InsideCell insideCell)
     {
-        foreach (var coin in _coins)
-        {
-            Destroy(coin.gameObject);
-        }
-
         _maze = maze;
-        CellView cellView = GetEmptyCell(tries);
-        _unit.transform.position = cellView.transform.position;
+        _template = template;
+        _insideCell = insideCell;
+        _objects = new List<GameObject>();
+    }
 
-        for (int i = 0; i < _cointCount; i++)
+    public void Create(int count, int tries = 100)
+    {
+        for (int i = 0; i < count; i++)
         {
-            cellView = GetEmptyCell(tries);
-            cellView.InsideCell = InsideCell.Coin;
-            _coins.Add(InstatntiateAt(cellView, _coinTemplate));
+            CellView freeCell = GetEmptyCell(tries);
+
+            if (freeCell != null)
+            {
+                _objects.Add(InstatntiateAt(freeCell, _template));
+                freeCell.InsideCell = _insideCell;
+            }
         }
     }
 
-    private GameObject InstatntiateAt(CellView cellView, GameObject template)
+    public void Destroy()
     {
-        var createdObject = Instantiate(template);
-        createdObject.transform.position = cellView.transform.position;
-        return createdObject;
+        foreach (GameObject obj in _objects)
+        {
+            Object.Destroy(obj);
+        }
     }
 
-    private CellView GetEmptyCell(int tries)
+    public CellView GetEmptyCell(int tries)
     {
         int counter = 0;
         CellView cellView;
@@ -49,5 +50,12 @@ public class Spawner : MonoBehaviour
         } while (cellView.InsideCell != InsideCell.None && counter < tries);
 
         return cellView;
+    }
+
+    private GameObject InstatntiateAt(CellView cellView, GameObject template)
+    {
+        var createdObject = Object.Instantiate(template);
+        createdObject.transform.position = cellView.transform.position;
+        return createdObject;
     }
 }

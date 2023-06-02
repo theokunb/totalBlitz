@@ -1,16 +1,15 @@
 public class StateBack : State
 {
-    private UnitMover _unit;
+    private UnitMover _unitMover;
 
-    public StateBack(Fsm fsm) : base(fsm)
+    public StateBack(Fsm fsm, UnitMover mover) : base(fsm)
     {
-        _unit = ServiceLocator.Instance.Get<UnitMover>();
+        _unitMover = mover;
     }
 
     public override void Update()
     {
         base.Update();
-
-        _unit.MoveBack();
+        _unitMover.MoveBack();
     }
 }

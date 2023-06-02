@@ -22,5 +22,6 @@ public enum InsideCell
 {
     None,
     Start,
-    Coin
+    Coin,
+    Enemy
 }

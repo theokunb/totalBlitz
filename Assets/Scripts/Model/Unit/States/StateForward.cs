@@ -1,15 +1,15 @@
 public class StateForward : State
 {
-    private UnitMover _unit;
+    private UnitMover _unitMover;
 
-    public StateForward(Fsm fsm) : base(fsm)
+    public StateForward(Fsm fsm,UnitMover mover) : base(fsm)
     {
-        _unit = ServiceLocator.Instance.Get<UnitMover>();
+        _unitMover = mover;
     }
 
     public override void Update()
     {
         base.Update();
-        _unit.MoveForward();
+        _unitMover.MoveForward();
     }
 }
