@@ -1,20 +1,26 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 
 public class LeaderboardViewModel : BaseViewModel
 {
-    private List<Data> _datas;
-
-    public IEnumerable<Data> Datas => _datas;
+    public ObservableCollection<Data> Datas { get; set; }
 
     public LeaderboardViewModel()
     {
-        _datas = new List<Data>();
+        Datas = new ObservableCollection<Data>();
+    }
+
+    public void LoadData()
+    {
         var storage = ServiceLocator.Instance.Get<Storage>();
 
-        foreach(var data in storage.Read().GetData())
+        foreach (var data in storage.Read().GetData())
         {
-            _datas.Add(data);
+            Datas.Add(data);
         }
+    }
+
+    public void RemoveData()
+    {
+        Datas.Clear();
     }
 }
