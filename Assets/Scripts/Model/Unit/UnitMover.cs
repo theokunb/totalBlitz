@@ -29,20 +29,20 @@ public class UnitMover : MonoBehaviour
         State backState = new StateBack(_fsm, this);
 
         Condition conditionOnIdle = new ConditionOnIdle(idleState, _input);
-        Condition conditionOnForward = new ConditionOnForward(forwardState, _input);
-        Condition conditionOnLeft = new ConditionOnLeft(leftState, _input);
-        Condition conditionOnBack = new ConditionOnBack(backState, _input);
-        Condition conditionRight = new ConditionOnRight(rightState, _input);
-        Condition conditionMoveForward = new ConditionMoveForward(forwardState, this, Distance);
-        Condition conditionMoveLeft = new ConditionMoveLeft(leftState, this, Distance);
-        Condition conditionMoveBack = new ConditionMoveBack(backState, this, Distance);
-        Condition conditionMoveRight = new ConditionMoveRight(rightState, this, Distance);
+        Condition conditionOnForward = new ConditionOnForward(forwardState, _input, this, Distance);
+        Condition conditionOnLeft = new ConditionOnLeft(leftState, _input, this, Distance);
+        Condition conditionOnBack = new ConditionOnBack(backState, _input, this, Distance);
+        Condition conditionRight = new ConditionOnRight(rightState, _input, this, Distance);
+        Condition conditionMoveForward = new ConditionMoveForward(leftState, this, Distance);
+        Condition conditionMoveLeft = new ConditionMoveLeft(backState, this, Distance);
+        Condition conditionMoveBack = new ConditionMoveBack(rightState, this, Distance);
+        Condition conditionMoveRight = new ConditionMoveRight(forwardState, this, Distance);
 
-        AddConditions(idleState, conditionOnIdle, conditionOnForward, conditionOnLeft, conditionRight, conditionOnBack);
-        AddConditions(forwardState, conditionOnIdle, conditionMoveForward, conditionMoveLeft, conditionMoveBack, conditionMoveRight);
-        AddConditions(leftState, conditionOnIdle, conditionMoveLeft, conditionMoveForward,conditionMoveBack, conditionMoveRight);
-        AddConditions(backState, conditionOnIdle, conditionMoveBack, conditionMoveForward, conditionMoveLeft, conditionMoveRight);
-        AddConditions(rightState, conditionOnIdle, conditionMoveRight, conditionMoveForward, conditionMoveLeft, conditionMoveBack);
+        AddConditions(idleState, conditionOnForward, conditionOnLeft, conditionRight, conditionOnBack);
+        AddConditions(forwardState, conditionOnIdle, conditionMoveForward, conditionOnLeft, conditionOnBack, conditionRight);
+        AddConditions(leftState, conditionOnIdle, conditionMoveLeft, conditionOnForward, conditionOnLeft, conditionOnBack, conditionRight);
+        AddConditions(backState, conditionOnIdle, conditionMoveBack, conditionOnForward, conditionOnLeft, conditionOnBack, conditionRight);
+        AddConditions(rightState, conditionOnIdle, conditionMoveRight, conditionOnForward, conditionOnLeft, conditionOnBack, conditionRight);
 
         _fsm.AddState(idleState);
         _fsm.AddState(forwardState);
@@ -61,6 +61,14 @@ public class UnitMover : MonoBehaviour
     private void FixedUpdate()
     {
         _fsm.Update();
+    }
+
+    private void AddConditions(State state, params Condition[] conditions)
+    {
+        foreach (Condition condition in conditions)
+        {
+            state.AddCondition(condition);
+        }
     }
 
     public void Stay()
@@ -102,14 +110,6 @@ public class UnitMover : MonoBehaviour
         if (_rigidBody.velocity.magnitude >= maxValue)
         {
             _rigidBody.velocity = direction * maxValue;
-        }
-    }
-
-    private void AddConditions(State state, params Condition[] conditions)
-    {
-        foreach (Condition condition in conditions)
-        {
-            state.AddCondition(condition);
         }
     }
 }

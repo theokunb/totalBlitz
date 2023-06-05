@@ -13,6 +13,6 @@ public class ConditionMoveLeft : Condition
 
     public override bool CanTransit()
     {
-        return !Physics.Raycast(_targetUnit.transform.position, -_targetUnit.transform.right, _distance);
+        return Physics.Raycast(_targetUnit.transform.position, -_targetUnit.transform.right, _distance);
     }
 }

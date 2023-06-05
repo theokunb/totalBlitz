@@ -19,7 +19,7 @@ public class Fsm
         _states.Add(state.GetType(), state);
     }
 
-    public void SetState(State nextState ,InputAction input = null)
+    public void SetState(State nextState)
     {
         if(_currentState == nextState)
         {
