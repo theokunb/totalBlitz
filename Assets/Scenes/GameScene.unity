@@ -1120,7 +1120,7 @@ MonoBehaviour:
   _coinTemplate: {fileID: 625758279593043729, guid: c79287529775d0a4ea91877ec0c57499, type: 3}
   _cointsCount: 10
   _enemyTemplate: {fileID: 4150345740808477259, guid: cba2d90674dfc6a429db924ad7b6212d, type: 3}
-  _enemyCount: 6
+  _enemyCount: 10
   tries: 10
 --- !u!1 &593410478
 GameObject:
