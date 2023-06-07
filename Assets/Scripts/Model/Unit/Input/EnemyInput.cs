@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class EnemyInput : Input
 {
+    [SerializeField] private float _visualRange;
+    [SerializeField] private float _hearingRange;
+
     private float[] _values = new float[4];
     private float _directionTimer;
     private float _rotationTimer;
@@ -9,12 +12,53 @@ public class EnemyInput : Input
     private float _delayRotation = 5;
     private Vector3 _rotation = Vector3.zero;
 
+    private Detector _visualDetector;
+    private Detector _hearingDetector;
+    private float _rotationSpeed = 5;
+    private Unit _target;
+    private bool _targeted = false;
+
     private void Start()
     {
         SetDirection();
+        _visualDetector = ServiceLocator.Instance.Get<VisualDetectorFactory>().CreateDetector(_visualRange, 1);
+        _hearingDetector = ServiceLocator.Instance.Get<HearingDetectorFactory>().CreateDetector(_hearingRange, 0);
+
     }
 
     private void Update()
+    {
+        if (Detector.CompositeDetect(transform.position, out _target, _visualDetector, _hearingDetector))
+        {
+            LookAtUnit(_target);
+            Target();
+        }
+        else
+        {
+            _targeted = false;
+            StupidLogic();
+        }
+    }
+
+    private void Target()
+    {
+        if(_targeted == true)
+        {
+            return;
+        }
+
+        _targeted = true;
+        _values = new float[4] { 1, 0, 0, 0 };
+    }
+
+    private void LookAtUnit(Unit unit)
+    {
+        Vector3 direction = unit.transform.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Lerp(transform.rotation,rotation, _rotationSpeed * Time.deltaTime);
+    }
+
+    private void StupidLogic()
     {
         _directionTimer += Time.deltaTime;
         _rotationTimer += Time.deltaTime;
@@ -26,7 +70,7 @@ public class EnemyInput : Input
             _directionTimer = 0;
         }
 
-        if(_rotationTimer >= _delayRotation)
+        if (_rotationTimer >= _delayRotation)
         {
             SetRotaion();
             _rotationTimer = 0;

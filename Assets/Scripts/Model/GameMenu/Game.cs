@@ -20,11 +20,16 @@ public class Game : MonoBehaviour
         NewGame();
         _storage = new FileStorage();
 
+        VisualDetectorFactory visualDetectorFactory = new VisualDetectorFactory();
+        HearingDetectorFactory hearingDetectorFactory = new HearingDetectorFactory();
+
         ServiceLocator.Instance.Register(_unit);
         ServiceLocator.Instance.Register(_maze);
         ServiceLocator.Instance.Register(_timer);
         ServiceLocator.Instance.Register(_unitRotate);
         ServiceLocator.Instance.Register(_storage);
+        ServiceLocator.Instance.Register(visualDetectorFactory);
+        ServiceLocator.Instance.Register(hearingDetectorFactory);
 
         ServiceLocator.Instance.Bind(_gameView, new GameViewModel());
         ServiceLocator.Instance.Bind(_mainView, new MainMenuViewModel());
@@ -42,6 +47,8 @@ public class Game : MonoBehaviour
         ServiceLocator.Instance.Unregister<Storage>();
         ServiceLocator.Instance.Unregister<MainMenuView>();
         ServiceLocator.Instance.Unregister<LeaderboardView>();
+        ServiceLocator.Instance.Unregister<VisualDetectorFactory>();
+        ServiceLocator.Instance.Unregister<HearingDetectorFactory>();
     }
 
     public void NewGame()

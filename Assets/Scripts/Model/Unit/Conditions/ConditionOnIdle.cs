@@ -5,12 +5,6 @@ public class ConditionOnIdle : Condition
     public ConditionOnIdle(State state, Input input): base(state)
     {
         _input = input;
-        _input.Enable();
-    }
-
-    ~ConditionOnIdle() 
-    {
-        _input.Disable();
     }
 
     public override bool CanTransit()
@@ -19,6 +13,11 @@ public class ConditionOnIdle : Condition
         var back = _input.BackReadValue();
         var left = _input.LeftReadValue();
         var right = _input.RightReadValue();
+
+        if((forward + back + left + right) != 0)
+        {
+
+        }
 
         return forward + back + left + right == 0;
     }
