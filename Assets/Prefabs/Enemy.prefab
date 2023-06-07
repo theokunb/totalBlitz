@@ -79,9 +79,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b78cf58bf1653642bdf97402e2bff04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _forwardSpeed: 70
-  _sideSpeed: 40
-  _backSpeed: 30
+  _forwardSpeed: 40
+  _sideSpeed: 30
+  _backSpeed: 25
   _input: {fileID: 5788763370088240211}
 --- !u!95 &5788763370088240208
 Animator:
@@ -115,6 +115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b514a247b3a07fc498456f6a7cc2b102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _visualRange: 10
+  _hearingRange: 3
 --- !u!1 &4551710271570393463
 GameObject:
   m_ObjectHideFlags: 0
