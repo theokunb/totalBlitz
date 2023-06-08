@@ -19,9 +19,9 @@ public class VisualDetector : Detector
 
         foreach (var collidedUnit in units)
         {
-            if (Physics.Linecast(position, collidedUnit.transform.position, out RaycastHit hit))
+            if (Physics.Linecast(position + Vector3.up/2, collidedUnit.transform.position + Vector3.up/2, out RaycastHit hit))
             {
-                if (hit.collider.TryGetComponent(out Unit _) == true)
+                if (hit.collider.TryGetComponent(out Catchable _) == true)
                 {
                     unit = collidedUnit;
                     return true;

@@ -14,11 +14,6 @@ public class ConditionOnIdle : Condition
         var left = _input.LeftReadValue();
         var right = _input.RightReadValue();
 
-        if((forward + back + left + right) != 0)
-        {
-
-        }
-
         return forward + back + left + right == 0;
     }
 }

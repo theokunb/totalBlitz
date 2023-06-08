@@ -23,7 +23,7 @@ public abstract class Detector
         {
             if(detector.TryDetect(position, out unit))
             {
-                return true;
+                return unit.Catched == false;
             }
         }
 

@@ -115,8 +115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b514a247b3a07fc498456f6a7cc2b102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visualRange: 10
-  _hearingRange: 3
+  _visualRange: 15
+  _hearingRange: 5
 --- !u!1 &4551710271570393463
 GameObject:
   m_ObjectHideFlags: 0
